@@ -60,16 +60,29 @@ int coprimo(long long int n, long long int i)
         }
     }
 }
-long long int chaveprivada(long long int e, long long int d, long long int totiente)
+long long int euclidesExtendido(long long int a, long long int b, long long int *s, long long int *t)
 {
-    if (e * d % totiente == 1)
+    if (b == 0)
     {
-        return d;
+        *s = 1;
+        *t = 0;
+        return a;
     }
-    else
+    long long int s1, t1;
+    int mdc = euclidesExtendido(b, a % b, &s1, &t1);
+    *s = t1;
+    *t = s1 - (a / b) * t1;
+    return mdc;
+}
+long long int chavePrivada(long long int a, long long int m)
+{
+    long long int s, t;
+    int mdc = euclidesExtendido(a, m, &s, &t);
+    if (mdc != 1)
     {
-        return chaveprivada(e, d + 1, totiente);
+        return -1;
     }
+    return (s % m + m) % m;
 }
 int gerar()
 {
@@ -79,12 +92,11 @@ int gerar()
     if (primo(p, 1, 0) == 1 && primo(q, 1, 0) == 1)
     {
         n = p * q;
-        coprimo(n, 1);
         printf("Escolha um desses coprimos para ser o e da sua chave pública\n");
         totiente = (p - 1) * (q - 1);
+        coprimo(totiente, 1);
         scanf("%lld", &e);
         printf("A chave pública é %lld %lld\n", e, n);
-        // printf("A chave privada é %lld %lld", chaveprivada(e, 1, totiente), n);
         return 0;
     }
     else
@@ -93,7 +105,6 @@ int gerar()
         return gerar();
     }
 }
-
 int criptografar()
 {
     long long int mensagemNormal, mensagemCrip, e, n;
@@ -105,24 +116,15 @@ int criptografar()
     printf("A mensagem criptografada é %lld", mensagemCrip % n);
     return 0;
 }
-/*int descriptografar()
-{
-    long long int mensagemNormal, mensagemCrip, d, n;
-    printf("Digite a mensagem que você quer descriptografar:");
-    scanf("%lld", &mensagemCrip);
-    printf("Digite a chave privada: ");
-    scanf("%lld%lld", &d, &n);
-    mensagemNormal = pow(mensagemCrip, d);
-    printf("A mensagem é %lld", mensagemNormal % n);
-    return 0;
-} */
+
 int descriptografar()
 {
     long long int mensagemCriptografada, p, q, e;
     printf("Digite a mensagem que você quer descriptografar:");
     scanf("%lld", &mensagemCriptografada);
+    printf("Digite o p, q e o 'e'");
     scanf("%lld%lld%lld", &p, &q, &e);
-    mensagemCriptografada = pow(mensagemCriptografada, chaveprivada(e, 1, ((p - 1) * (q - 1))));
+    mensagemCriptografada = pow(mensagemCriptografada, chavePrivada(e, ((p - 1) * (q - 1))));
     printf("A mensagem é %lld", mensagemCriptografada % (p * q));
     return 0;
 }
