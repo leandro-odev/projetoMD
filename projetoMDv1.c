@@ -6,26 +6,26 @@ para cria-la é ineficaz em números grandes, mas é só usar o código da quest
 de letras em números(e a quebra dos números, j*/
 int primo(long long int x, long long int i, long long int div) // Verificar se os números p e q são primos
 {
-    if (i > x)
+    if (i > x / 2)
     {
-        if (div == 2)
+        if (x % 2 == 0 && x != 2 || x == 1 || x == 0 || div != 1)
         {
-            return 1;
+            return 0;
         }
         else
         {
-            return 0;
+            return 1;
         }
     }
     else
     {
         if (x % i == 0)
         {
-            return primo(x, i + 1, div + 1);
+            return primo(x, i + 2, div + 1);
         }
         else
         {
-            return primo(x, i + 1, div);
+            return primo(x, i + 2, div);
         }
     }
 }
@@ -132,7 +132,7 @@ void descriptografar() // Enviar chave criptografada para adquirir a mensagem pu
     scanf("%lld", &mensagemCriptografada);
     printf("Digite o p, q e o 'e'");
     scanf("%lld%lld%lld", &p, &q, &e);
-    mensagemCriptografada = pow(mensagemCriptografada, chavePrivada(e, ((p - 1) * (q - 1))));
+    mensagemCriptografada = potencia(mensagemCriptografada, chavePrivada(e, ((p - 1) * (q - 1))));
     printf("A mensagem é %lld", mensagemCriptografada % (p * q));
     return;
 }
