@@ -140,8 +140,30 @@ void descriptografar() // Enviar chave criptografada para adquirir a mensagem pu
 int main() // Escolha de função
 {
     int escolha;
-    printf("Digite 1 para gerar a chave pública, 2 para Encriptar ou 3 para Desencriptar.\n");
-    scanf("%d", &escolha);
+
+    printf("-----------------------------------\n");
+    printf("      Bem vindo ao projeto de        ");
+    printf("          Cripografia RSA          \n");
+    printf("-----------------------------------\n");
+    printf("\n");
+
+    while(escolha != 1 || escolha != 2 || escolha != 3)
+    {
+        printf("Para começar escolha a opção desejada:\n");
+        printf("1 - Gerar chave pública\n");
+        printf("2 - Encriptar\n");
+        printf("3 - Desencriptar\n");
+        scanf("%d", escolha);
+        printf("\n");
+
+        if(escolha != 1 || escolha != 2 || escolha != 3)
+        {
+            printf("Opção invalida!\n");
+            printf("Por favor, digite novamente\n");
+            printf("\n");
+        }
+    }
+    
     if (escolha == 1)
     {
         gerar();
@@ -156,10 +178,5 @@ int main() // Escolha de função
     {
         descriptografar();
         return 0;
-    }
-    else
-    {
-        printf("Opção invalida, por favor, digite novamente");
-        return main();
     }
 }
