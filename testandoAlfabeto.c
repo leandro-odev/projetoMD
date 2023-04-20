@@ -1,5 +1,5 @@
 #include <stdio.h>
-long long int potencia(int mensagem, int e) // Função que calcula a base, sendo o primeiro numero a base e o segundo a potência
+long long int potencia(int mensagem, int e) // Função que calcula a potência, sendo o primeiro numero a base e o segundo o expoente
 {
     long long int resultado = mensagem;
     for (int i = 0; i < e - 1; i++)
