@@ -1,34 +1,50 @@
 #include <stdio.h>
-/*TODO: Transformar letras minúsculas em maiúsculas, enviar valores convertidos para a função criptografia e descriptografia(nesse caso creio que seja 
-preciso uma função extra para destransformar para letra)*/
-int ordena(char palavra[], int cont, int i, char alfabeto[], int contAlfabeto)
+long long int potencia(int mensagem, int e) // Função que calcula a base, sendo o primeiro numero a base e o segundo a potência
+{
+    long long int resultado = mensagem;
+    for (int i = 0; i < e - 1; i++)
+    {
+        resultado = resultado * mensagem;
+    }
+    return resultado;
+}
+int criptografia(long long int convertido, long long int e, long long int n)
+{
+    convertido = potencia(convertido, e);
+    printf("%lld ", convertido % n);
+    return 0;
+}
+int ordena(char palavra[], int cont, int i, char alfabeto[], int contAlfabeto, int e, int n)
 {
     if (cont == i)
     {
         printf("\n");
         return 0;
     }
-    else if (palavra[cont] == alfabeto[contAlfabeto])//verifica se a letra da palavra é igual a letra do alfabeto da posição do array e ativa a função caso seja
+    else if (palavra[cont] == alfabeto[contAlfabeto])
     {
-        if (contAlfabeto == 26)//Valor do espaço, já que não segue o mesmo padrão das letras em ascii
+        if (contAlfabeto == 26)
         {
             int convertido = 28;
-            printf("%d ", convertido);
-            return ordena(palavra, cont + 1, i, alfabeto, 0);
+            criptografia(convertido, e, n);
+            return ordena(palavra, cont + 1, i, alfabeto, 0, e, n);
         }
-        int convertido = alfabeto[contAlfabeto] - 63;//Conversor de letra para numero (ASCII - 63)
-        printf("%d ", convertido);
-        return ordena(palavra, cont + 1, i, alfabeto, 0);
+        int convertido = alfabeto[contAlfabeto] - 63;
+        criptografia(convertido, e, n);
+        return ordena(palavra, cont + 1, i, alfabeto, 0, e, n);
     }
-    return ordena(palavra, cont, i, alfabeto, contAlfabeto + 1);//caso a letra não seja igual ao alfabeto, adiciona 1 no contador do alfabeto e verifica novamente;
+    return ordena(palavra, cont, i, alfabeto, contAlfabeto + 1, e, n);
 }
 
 void frase(char palavra[], int i, char alfabeto[])
 {
-    scanf("%c", &palavra[i]);//scan da letra na posição do array, inicialmente 0, caso dê um \n, o programa enviar
+    scanf("%c", &palavra[i]);
     if (palavra[i] == '\n')
     {
-        ordena(palavra, 0, i, alfabeto, 0);
+        int e, n;
+        printf("Digite a chave publica: ");
+        scanf("%d %d", &e, &n);
+        ordena(palavra, 0, i, alfabeto, 0, e, n);
         return;
     }
     frase(palavra, i + 1, alfabeto);
@@ -38,6 +54,7 @@ int main()
 {
     char palavra[100];
     char alfabeto[27] = "abcdefghijklmnopqrstuvwxyz ";
+    printf("Digite a frase que você quer criptografar: ");
     frase(palavra, 0, alfabeto);
     return 0;
 }
