@@ -40,26 +40,26 @@ long long int mdc(long long int n, long long int i) // Ver o mdc de todos possiv
         return mdc(i, n % i);
     }
 }
-long long int coprimo(long long int n) // Ver os numeros que são coprimos para a formação da chave 'e'
+long long int coprimo(long long int totiente) // Ver os numeros que são coprimos para a formação da chave 'e'
 {
-    long long int i;
-    printf("Digite um número relativamente primo a %lld:", n);
+    long long int e;
+    printf("Digite um número relativamente primo a %lld:", totiente);
     scanf("%lld", &i);
-    if (i > n)
+    if (e > totiente)
     {
         printf("Número inválido, digite novamente\n");
-        return coprimo(n);
+        return coprimo(totiente);
     }
     else
     {
-        if (mdc(n, i) == 1)
+        if (mdc(totiente, e) == 1)
         {
-            return i;
+            return e;
         }
         else
         {
             printf("Número inválido, digite novamente\n");
-            return coprimo(n);
+            return coprimo(totiente);
         }
     }
 }
