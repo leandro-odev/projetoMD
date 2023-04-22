@@ -97,3 +97,8 @@ long long int chavePrivada(long long int a, long long int m) // Enviar o 'd' da 
     return (s % m + m) % m;
 }
 
+int main()
+{
+
+    return 0;
+}

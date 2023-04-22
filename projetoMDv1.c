@@ -80,14 +80,24 @@ long long int chavePrivada(long long int a, long long int m) // Enviar o 'd' da 
     int mdc = euclidesExtendido(a, m, &s, &t);
     if (mdc != 1)
     {
+        FILE *gerar;
+        gerar = fopen("chavePrivada.txt", "w");
+        fprintf(gerar, "-1");
+        fclose(gerar);
         return -1;
     }
+
+    FILE *gerar;
+    gerar = fopen("chavePrivada.txt", "w");
+    fprintf(gerar, "%lld", (s % m + m) % m);
+    fclose(gerar);
+
     return (s % m + m) % m;
 }
 void gerar() // Função que gera a chave pública
 {
     long long int p, q, e, n, totiente;
-    printf("Digite dois números:");
+    printf("Digite dois números: ");
     scanf("%lld%lld", &p, &q);
     if (primo(p, 1, 0) == 1 && primo(q, 1, 0) == 1)
     {
@@ -97,6 +107,12 @@ void gerar() // Função que gera a chave pública
         coprimo(totiente, 1);
         scanf("%lld", &e);
         printf("A chave pública é %lld %lld\n", e, n);
+
+        FILE *gerar;
+        gerar = fopen("chavePublica.txt", "w");
+        fprintf(gerar, "%lld %lld", e, n);
+        fclose(gerar);
+
         return;
     }
     else
@@ -122,14 +138,26 @@ void criptografar() // Enviar mensagem normal para adquirir a criptografada
     printf("Digite a chave pública: ");
     scanf("%lld%lld", &e, &n);
     printf("A mensagem criptografada é %lld", potencia(mensagem, e) % n);
+
+    FILE *gerar;
+    gerar = fopen("mensagemCriptografada.txt", "w");
+    fprintf(gerar, "%lld", potencia(mensagem, e) % n);
+    fclose(gerar);
+
     return;
 }
 
 void descriptografar() // Enviar chave criptografada para adquirir a mensagem pura
 {
-    long long int mensagemCriptografada, p, q, e;
+    long long int mensagemCriptografada, p, q, e, msgCrip2;
     printf("Digite a mensagem que você quer descriptografar:");
     scanf("%lld", &mensagemCriptografada);
+
+    //FILE *descriptografar;
+    //descriptografar = fopen("mensagemCriptografada", "r");
+    //mensagemCriptografada = fgets(msgCrip2, 100, descriptografar);
+    //fclose(descriptografar);
+
     printf("Digite o p, q e o 'e'");
     scanf("%lld%lld%lld", &p, &q, &e);
     mensagemCriptografada = potencia(mensagemCriptografada, chavePrivada(e, ((p - 1) * (q - 1))));
@@ -139,44 +167,48 @@ void descriptografar() // Enviar chave criptografada para adquirir a mensagem pu
 
 int main() // Escolha de função
 {
-    int escolha;
 
     printf("-----------------------------------\n");
-    printf("      Bem vindo ao projeto de        ");
+    printf("      Bem vindo ao projeto de      \n");
     printf("          Cripografia RSA          \n");
     printf("-----------------------------------\n");
     printf("\n");
 
-    while(escolha != 1 || escolha != 2 || escolha != 3)
+    int escolha;
+
+    while (escolha != 4)
     {
-        printf("Para começar escolha a opção desejada:\n");
-        printf("1 - Gerar chave pública\n");
+        printf("Para comecar escolha a opcao desejada:\n");
+        printf("1 - Gerar chave publica\n");
         printf("2 - Encriptar\n");
         printf("3 - Desencriptar\n");
         scanf("%d", escolha);
         printf("\n");
 
-        if(escolha != 1 || escolha != 2 || escolha != 3)
+        if (escolha != 1 || escolha != 2 || escolha != 3)
         {
-            printf("Opção invalida!\n");
+            printf("Opcao invalida!\n");
             printf("Por favor, digite novamente\n");
             printf("\n");
         }
+        else if (escolha == 1)
+        {
+            printf("entrou no gerar\n");
+            gerar();
+        }
+        else if (escolha == 2)
+        {
+            printf("entrou no criptografar\n");
+            criptografar();
+        }
+        else if (escolha == 3)
+        {
+            printf("entrou no descriptografar\n");
+            descriptografar();
+        }
     }
-    
-    if (escolha == 1)
-    {
-        gerar();
-        return 0;
-    }
-    if (escolha == 2)
-    {
-        criptografar();
-        return 0;
-    }
-    if (escolha == 3)
-    {
-        descriptografar();
-        return 0;
-    }
+
+    printf("Obrigado por usar o programa!\n");
+
+    return 0;
 }
