@@ -105,14 +105,16 @@ void gerar() // Função que gera a chave pública
         gerar();
     }
 }
-long long int potencia(int mensagem, int e) // Função que calcula a base, sendo o primeiro numero a base e o segundo a potência
-{
-    long long int resultado = mensagem;
-    for (int i = 0; i < e - 1; i++)
-    {
-        resultado = resultado * mensagem;
+int exponenciacaoRapida(long long int mensagem, long long int e, long long int n) {
+    int res = 1;
+    while (e > 0) {
+        if (e % 2 == 1) {
+            res = (res * mensagem) % n;
+        }
+        mensagem = (mensagem * mensagem) % n;
+        e = e / 2;
     }
-    return resultado;
+    return res;
 }
 void criptografar() // Enviar mensagem normal para adquirir a criptografada
 {
@@ -121,7 +123,7 @@ void criptografar() // Enviar mensagem normal para adquirir a criptografada
     scanf("%lld", &mensagem);
     printf("Digite a chave pública: ");
     scanf("%lld%lld", &e, &n);
-    printf("A mensagem criptografada é %lld", potencia(mensagem, e) % n);
+    printf("A mensagem criptografada é %d", exponenciacaoRapida(mensagem, e, n));
     return;
 }
 
