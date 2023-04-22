@@ -1,17 +1,18 @@
 #include <stdio.h>
-long long int potencia(int mensagem, int e) // Função que calcula a potência, sendo o primeiro numero a base e o segundo o expoente
-{
-    long long int resultado = mensagem;
-    for (int i = 0; i < e - 1; i++)
-    {
-        resultado = resultado * mensagem;
+int exp_mod_rapida(int a, int b, int m) {
+    int res = 1;
+    while (b > 0) {
+        if (b % 2 == 1) {
+            res = (res * a) % m;
+        }
+        a = (a * a) % m;
+        b = b / 2;
     }
-    return resultado;
+    return res;
 }
 int criptografia(long long int convertido, long long int e, long long int n)
 {
-    convertido = potencia(convertido, e);
-    printf("%lld ", convertido % n);
+    printf("%d ", exp_mod_rapida(convertido, e, n));
     return 0;
 }
 int ordena(char palavra[], int cont, int i, char alfabeto[], int contAlfabeto, int e, int n)
