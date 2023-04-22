@@ -1,6 +1,5 @@
 #include <stdio.h>
-/*Temos que ajeitar o lance do scanf, já que o código não está parando e arranjar uma forma de ler o espaço corretamente, já que não segue o padrão
-de transformação das letras normais, talvez eu tenha pensado numa forma de resolver, mais creio que só vai gastar mais linhas e não vai dar certo*/
+//Problema de ler espaço resolvido, porém o programa não tá parando, temos que resolver isso de alguma forma
 int exp_mod_rapida(int mensagem, int e, int n)
 {
     int res = 1;
@@ -51,6 +50,10 @@ int main()
         int resultado = mensagem;
         resultado = exp_mod_rapida(mensagem, d, p * q);
         char letra = resultado + 63;
+        if (letra > 90 || letra < 65)
+        {
+            letra = ' ';
+        }
         printf("%c", letra);
     }
     return 0;
