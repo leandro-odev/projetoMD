@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-/*O código funciona para pequenos numeros, no momento temos que melhorar o algoritmo de verificação de primo, caso o valor seja muito alto pode dar problema
-isso é fácil de resolver e irei resolver assim que acordar, o problema do algoritmo no momento é na criação da chave privada, já que o método que estou usando
-para cria-la é ineficaz em números grandes, mas é só usar o código da questão 6 que já resolvemos o problema. Sobrando só a otimização do código e a transformação
-de letras em números(e a quebra dos números, j*/
+/*TODO: Colocar as funções para salvar a mensagem final em .txt e fazer a descriptografia parar*/
 int primo(long long int x, long long int i, long long int div) // Verificar se os números p e q são primos
 {
     if (i > sqrt(x))
