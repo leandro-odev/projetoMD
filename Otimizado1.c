@@ -40,26 +40,26 @@ long long int mdc(long long int n, long long int i) // Ver o mdc de todos possiv
         return mdc(i, n % i);
     }
 }
-long long int coprimo(long long int totiente) // Ver os numeros que são coprimos para a formação da chave 'e'
+long long int coprimo(long long int n) // Ver os numeros que são coprimos para a formação da chave 'e'
 {
-    long long int e;
-    printf("Digite um número relativamente primo a %lld:", totiente);
+    long long int i;
+    printf("Digite um número relativamente primo a %lld:", n);
     scanf("%lld", &i);
-    if (e > totiente)
+    if (i > n)
     {
         printf("Número inválido, digite novamente\n");
-        return coprimo(totiente);
+        return coprimo(n);
     }
     else
     {
-        if (mdc(totiente, e) == 1)
+        if (mdc(n, i) == 1)
         {
-            return e;
+            return i;
         }
         else
         {
             printf("Número inválido, digite novamente\n");
-            return coprimo(totiente);
+            return coprimo(n);
         }
     }
 }
@@ -105,16 +105,14 @@ void gerar() // Função que gera a chave pública
         gerar();
     }
 }
-int exponenciacaoRapida(long long int mensagem, long long int e, long long int n) {
-    int res = 1;
-    while (e > 0) {
-        if (e % 2 == 1) {
-            res = (res * mensagem) % n;
-        }
-        mensagem = (mensagem * mensagem) % n;
-        e = e / 2;
+long long int potencia(int mensagem, int e) // Função que calcula a base, sendo o primeiro numero a base e o segundo a potência
+{
+    long long int resultado = mensagem;
+    for (int i = 0; i < e - 1; i++)
+    {
+        resultado = resultado * mensagem;
     }
-    return res;
+    return resultado;
 }
 void criptografar() // Enviar mensagem normal para adquirir a criptografada
 {
@@ -123,7 +121,7 @@ void criptografar() // Enviar mensagem normal para adquirir a criptografada
     scanf("%lld", &mensagem);
     printf("Digite a chave pública: ");
     scanf("%lld%lld", &e, &n);
-    printf("A mensagem criptografada é %d", exponenciacaoRapida(mensagem, e, n));
+    printf("A mensagem criptografada é %lld", potencia(mensagem, e) % n);
     return;
 }
 
