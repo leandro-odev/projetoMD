@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-/*O código funciona para pequenos numeros, no momento temos que melhorar o algoritmo de verificação de primo, caso o valor seja muito alto pode dar problema
-isso é fácil de resolver e irei resolver assim que acordar, o problema do algoritmo no momento é na criação da chave privada, já que o método que estou usando
-para cria-la é ineficaz em números grandes, mas é só usar o código da questão 6 que já resolvemos o problema. Sobrando só a otimização do código e a transformação
-de letras em números(e a quebra dos números, j*/
+
 int primo(long long int x, long long int i, long long int div) // Verificar se os números p e q são primos
 {
     if (i > sqrt(x))
@@ -63,6 +60,24 @@ long long int coprimo(long long int n) // Ver os numeros que são coprimos para 
         }
     }
 }
+void gerar() // Função que gera a chave pública
+{
+    long long int p, q, e, n, totiente;
+    printf("Digite dois números:");
+    scanf("%lld%lld", &p, &q);
+    if (primo(p, 1, 0) == 1 && primo(q, 1, 0) == 1)
+    {
+        n = p * q;
+        totiente = (p - 1) * (q - 1);
+        printf("A chave pública é %lld %lld\n", coprimo(totiente), n);
+        return;
+    }
+    else
+    {
+        printf("Número inválido, digite novamente\n");
+        gerar();
+    }
+}
 long long int euclidesExtendido(long long int a, long long int b, long long int *s, long long int *t) // Achar o 'd'
 {
     if (b == 0)
@@ -87,44 +102,60 @@ long long int chavePrivada(long long int a, long long int m) // Enviar o 'd' da 
     }
     return (s % m + m) % m;
 }
-void gerar() // Função que gera a chave pública
+int exp_mod_rapida(int mensagem, int e, int n)
 {
-    long long int p, q, e, n, totiente;
-    printf("Digite dois números:");
-    scanf("%lld%lld", &p, &q);
-    if (primo(p, 1, 0) == 1 && primo(q, 1, 0) == 1)
+    int res = 1;
+    while (e > 0)
     {
-        n = p * q;
-        totiente = (p - 1) * (q - 1);
-        printf("A chave pública é %lld %lld\n", coprimo(totiente), n);
-        return;
+        if (e % 2 == 1)
+        {
+            res = (res * mensagem) % n;
+        }
+        mensagem = (mensagem * mensagem) % n;
+        e = e / 2;
     }
-    else
-    {
-        printf("Número inválido, digite novamente\n");
-        gerar();
-    }
+    return res;
 }
-long long int potencia(int mensagem, int e) // Função que calcula a base, sendo o primeiro numero a base e o segundo a potência
+int criptografia(long long int convertido, long long int e, long long int n)
 {
-    long long int resultado = mensagem;
-    for (int i = 0; i < e - 1; i++)
-    {
-        resultado = resultado * mensagem;
-    }
-    return resultado;
+    printf("%d ", exp_mod_rapida(convertido, e, n));
+    return 0;
 }
-void criptografar() // Enviar mensagem normal para adquirir a criptografada
+int ordena(char palavra[], int cont, int i, char alfabeto[], int contAlfabeto, int e, int n)
 {
-    long long int mensagem, e, n;
-    printf("Digite a mensagem que você quer criptografar:");
-    scanf("%lld", &mensagem);
-    printf("Digite a chave pública: ");
-    scanf("%lld%lld", &e, &n);
-    printf("A mensagem criptografada é %lld", potencia(mensagem, e) % n);
-    return;
+    if (cont == i)
+    {
+        printf("\n");
+        return 0;
+    }
+    else if (palavra[cont] == alfabeto[contAlfabeto])
+    {
+        if (contAlfabeto == 26)
+        {
+            int convertido = 28;
+            criptografia(convertido, e, n);
+            return ordena(palavra, cont + 1, i, alfabeto, 0, e, n);
+        }
+        int convertido = alfabeto[contAlfabeto] - 63;
+        criptografia(convertido, e, n);
+        return ordena(palavra, cont + 1, i, alfabeto, 0, e, n);
+    }
+    return ordena(palavra, cont, i, alfabeto, contAlfabeto + 1, e, n);
 }
 
+void frase(char palavra[], int i, char alfabeto[])
+{
+    scanf("%c", &palavra[i]);
+    if (palavra[i] == '\n')
+    {
+        int e, n;
+        printf("Digite a chave publica: ");
+        scanf("%d %d", &e, &n);
+        ordena(palavra, 0, i, alfabeto, 0, e, n);
+        return;
+    }
+    frase(palavra, i + 1, alfabeto);
+}
 void descriptografar() // Enviar chave criptografada para adquirir a mensagem pura
 {
     long long int mensagemCriptografada, p, q, e;
@@ -132,14 +163,16 @@ void descriptografar() // Enviar chave criptografada para adquirir a mensagem pu
     scanf("%lld", &mensagemCriptografada);
     printf("Digite o p, q e o 'e'");
     scanf("%lld%lld%lld", &p, &q, &e);
-    mensagemCriptografada = potencia(mensagemCriptografada, chavePrivada(e, ((p - 1) * (q - 1))));
-    printf("A mensagem é %lld", mensagemCriptografada % (p * q));
+    int d = chavePrivada(e, ((p - 1) * (q - 1)));
+    printf("A mensagem é %d", exp_mod_rapida(mensagemCriptografada, d, p * q));
     return;
 }
 
 int main() // Escolha de função
 {
     int escolha;
+    char palavra[255];
+    char alfabeto[27] = "abcdefghijklmnopqrstuvwxyz ";
     printf("Digite 1 para gerar a chave pública, 2 para Encriptar ou 3 para Desencriptar.\n");
     scanf("%d", &escolha);
     if (escolha == 1)
@@ -149,7 +182,9 @@ int main() // Escolha de função
     }
     if (escolha == 2)
     {
-        criptografar();
+        printf("Digite a frase que você quer criptografar: ");
+        scanf("%c", &palavra[0]);
+        frase(palavra, 0, alfabeto);
         return 0;
     }
     if (escolha == 3)
@@ -163,3 +198,4 @@ int main() // Escolha de função
         return main();
     }
 }
+
