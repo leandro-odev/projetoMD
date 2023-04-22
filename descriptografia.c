@@ -1,5 +1,6 @@
 #include <stdio.h>
-//Temos que ajeitar o lance do scanf,
+/*Temos que ajeitar o lance do scanf, já que o código não está parando e arranjar uma forma de ler o espaço corretamente, já que não segue o padrão
+de transformação das letras normais*/
 int exp_mod_rapida(int mensagem, int e, int n)
 {
     int res = 1;
