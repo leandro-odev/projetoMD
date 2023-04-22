@@ -52,7 +52,7 @@ void frase(char palavra[], int i, char alfabeto[])
 
 int main()
 {
-    char palavra[100];
+    char palavra[255];
     char alfabeto[27] = "abcdefghijklmnopqrstuvwxyz ";
     printf("Digite a frase que você quer criptografar: ");
     frase(palavra, 0, alfabeto);
