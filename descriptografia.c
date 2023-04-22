@@ -1,4 +1,5 @@
 #include <stdio.h>
+//Temos que ajeitar o lance do scanf,
 int exp_mod_rapida(int mensagem, int e, int n)
 {
     int res = 1;
@@ -44,9 +45,7 @@ int main()
     scanf("%d %d %d", &p, &q, &e);
     int mensagem;
     int d = chavePrivada(e, ((p - 1) * (q - 1)));
-    char oi = '\n';
-    int parada = oi;
-    while (scanf("%d", &mensagem) != parada)
+    while (scanf("%d", &mensagem) != 0)
     {
         int resultado = mensagem;
         resultado = exp_mod_rapida(mensagem, d, p * q);
