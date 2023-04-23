@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-/*TODO: Colocar as funções para salvar a mensagem final em .txt e fazer a descriptografia parar*/
+
 int primo(long long int x, long long int i, long long int div) // Verificar se os números p e q são primos
 {
     if (i > sqrt(x))
@@ -156,16 +156,25 @@ void frase(char palavra[], int i, char alfabeto[])
     }
     frase(palavra, i + 1, alfabeto);
 }
-void descriptografar() // Enviar chave criptografada para adquirir a mensagem pura
+int descriptografar(int mensagem, int d, int n) // Enviar chave criptografada para adquirir a mensagem pura
 {
-    long long int mensagemCriptografada, p, q, e;
-    printf("Digite a mensagem que você quer descriptografar:");
-    scanf("%lld", &mensagemCriptografada);
-    printf("Digite o p, q e o 'e'");
-    scanf("%lld%lld%lld", &p, &q, &e);
-    int d = chavePrivada(e, ((p - 1) * (q - 1)));
-    printf("A mensagem é %d", exp_mod_rapida(mensagemCriptografada, d, p * q));
-    return;
+    scanf("%d", &mensagem);
+    if (mensagem != 0)
+    {
+        int resultado = mensagem;
+        resultado = exp_mod_rapida(mensagem, d, n);
+        char letra = resultado + 63;
+        if (letra > 90 || letra < 65)
+        {
+            letra = ' ';
+        }
+        printf("%c", letra);
+        return descriptografar(mensagem, d, n);
+    }
+    else if (mensagem <= 0)
+    {
+        return 0;
+    }
 }
 
 int main() // Escolha de função
@@ -190,22 +199,12 @@ int main() // Escolha de função
     if (escolha == 3)
     {
         int e, p, q;
-        printf("Digite a chave publica: ");
+        printf("Digite o 'p', 'q' e 'e': ");
         scanf("%d %d %d", &p, &q, &e);
         int mensagem;
+        printf("Digite a mensagem que você quer descriptografar: ");
         int d = chavePrivada(e, ((p - 1) * (q - 1)));
-        while (scanf("%d", &mensagem) != 0)
-        {
-            int resultado = mensagem;
-            resultado = exp_mod_rapida(mensagem, d, p * q);
-            char letra = resultado + 63;
-            if (letra > 90 || letra < 65)
-            {
-                letra = ' ';
-            }
-            printf("%c", letra);
-        }
-        return 0;
+        descriptografar(mensagem, d, p * q);
     }
     else
     {
@@ -213,3 +212,4 @@ int main() // Escolha de função
         return main();
     }
 }
+
