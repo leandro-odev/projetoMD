@@ -2,7 +2,7 @@
 #include <math.h>
 #include <ctype.h>
 
-int primo(long long int x, long long int i, long long int div) // Verificar se os números p e q são primos
+int primo(long long int x, long long int i, int div) // Verificar se os números p e q são primos
 {
     if (i > sqrt(x))
     {
@@ -27,6 +27,7 @@ int primo(long long int x, long long int i, long long int div) // Verificar se o
         }
     }
 }
+
 long long int mdc(long long int n, long long int i) // Ver o mdc de todos possiveis numeros
 {
     if (n % i == 0)
@@ -38,6 +39,7 @@ long long int mdc(long long int n, long long int i) // Ver o mdc de todos possiv
         return mdc(i, n % i);
     }
 }
+
 long long int coprimo(long long int n) // Ver os numeros que são coprimos para a formação da chave 'e'
 {
     long long int i;
@@ -61,6 +63,7 @@ long long int coprimo(long long int n) // Ver os numeros que são coprimos para 
         }
     }
 }
+
 void gerar() // Função que gera a chave pública
 {
     long long int p, q, e, n, totiente;
@@ -70,7 +73,11 @@ void gerar() // Função que gera a chave pública
     {
         n = p * q;
         totiente = (p - 1) * (q - 1);
-        printf("A chave pública é %lld %lld\n", coprimo(totiente), n);
+        char *ChavePublica = "ChavePublica.txt";
+        FILE *fp = fopen(ChavePublica, "w");
+        fprintf(fp, "A chave pública é %lld %lld\n", coprimo(totiente), n);
+        fclose(fp);
+        printf("A chave pública foi salva no diretório do programa\n");
         return;
     }
     else
@@ -94,31 +101,34 @@ int exp_mod_rapida(int mensagem, int e, int n)
     }
     return res;
 }
-int criptografia(long long int convertido, long long int e, long long int n)
-{
-    printf("%d ", exp_mod_rapida(convertido, e, n));
-    return 0;
-}
-int ordena(char palavra[], int cont, int i, char alfabeto[], int contAlfabeto, int e, int n)
+
+int ordena(char palavra[], int cont, int i, char alfabeto[], int contAlfabeto, int e, int n, int convertido[])
 {
     if (cont == i)
     {
-        printf("\n");
+        char *criptografia = "criptografia.txt";
+
+        FILE *fp = fopen(criptografia, "w");
+        for (int j = 0; j < i; j++)
+        {
+            int list = exp_mod_rapida(convertido[j], e, n);
+            fprintf(fp, "%d ", list);
+        }
+        fclose(fp);
+        printf("A mensagem criptografada foi salva no diretório do programa\n");
         return 0;
     }
     else if (toupper(palavra[cont]) == alfabeto[contAlfabeto])
     {
         if (contAlfabeto == 26)
         {
-            int convertido = 28;
-            criptografia(convertido, e, n);
-            return ordena(palavra, cont + 1, i, alfabeto, 0, e, n);
+            convertido[cont] = 28;
+            return ordena(palavra, cont + 1, i, alfabeto, 0, e, n, convertido);
         }
-        int convertido = alfabeto[contAlfabeto] - 63;
-        criptografia(convertido, e, n);
-        return ordena(palavra, cont + 1, i, alfabeto, 0, e, n);
+        convertido[cont] = alfabeto[contAlfabeto] - 63;
+        return ordena(palavra, cont + 1, i, alfabeto, 0, e, n, convertido);
     }
-    return ordena(palavra, cont, i, alfabeto, contAlfabeto + 1, e, n);
+    return ordena(palavra, cont, i, alfabeto, contAlfabeto + 1, e, n, convertido);
 }
 
 void frase(char palavra[], int i, char alfabeto[])
@@ -129,7 +139,8 @@ void frase(char palavra[], int i, char alfabeto[])
         int e, n;
         printf("Digite a chave publica: ");
         scanf("%d %d", &e, &n);
-        ordena(palavra, 0, i, alfabeto, 0, e, n);
+        int convertido[i];
+        ordena(palavra, 0, i, alfabeto, 0, e, n, convertido);
         return;
     }
     frase(palavra, i + 1, alfabeto);
@@ -149,6 +160,7 @@ long long int euclidesExtendido(long long int a, long long int b, long long int 
     *t = s1 - (a / b) * t1;
     return mdc;
 }
+
 long long int chavePrivada(long long int a, long long int m) // Enviar o 'd' da chave privada
 {
     long long int s, t;
@@ -216,3 +228,4 @@ int main() // Escolha de função
         return main();
     }
 }
+
