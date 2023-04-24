@@ -27,7 +27,6 @@ int primo(long long int x, long long int i, int div) // Verificar se os números
         }
     }
 }
-
 long long int mdc(long long int n, long long int i) // Ver o mdc de todos possiveis numeros
 {
     if (n % i == 0)
@@ -39,7 +38,6 @@ long long int mdc(long long int n, long long int i) // Ver o mdc de todos possiv
         return mdc(i, n % i);
     }
 }
-
 long long int coprimo(long long int n) // Ver os numeros que são coprimos para a formação da chave 'e'
 {
     long long int i;
@@ -63,7 +61,6 @@ long long int coprimo(long long int n) // Ver os numeros que são coprimos para 
         }
     }
 }
-
 void gerar() // Função que gera a chave pública
 {
     long long int p, q, e, n, totiente;
@@ -86,7 +83,6 @@ void gerar() // Função que gera a chave pública
         gerar();
     }
 }
-
 int exp_mod_rapida(int mensagem, int e, int n)
 {
     int res = 1;
@@ -101,7 +97,6 @@ int exp_mod_rapida(int mensagem, int e, int n)
     }
     return res;
 }
-
 int ordena(char palavra[], int cont, int i, char alfabeto[], int contAlfabeto, int e, int n, int convertido[])
 {
     if (cont == i)
@@ -130,7 +125,6 @@ int ordena(char palavra[], int cont, int i, char alfabeto[], int contAlfabeto, i
     }
     return ordena(palavra, cont, i, alfabeto, contAlfabeto + 1, e, n, convertido);
 }
-
 void frase(char palavra[], int i, char alfabeto[])
 {
     scanf("%c", &palavra[i]);
@@ -145,7 +139,6 @@ void frase(char palavra[], int i, char alfabeto[])
     }
     frase(palavra, i + 1, alfabeto);
 }
-
 long long int euclidesExtendido(long long int a, long long int b, long long int *s, long long int *t) // Achar o 'd'
 {
     if (b == 0)
@@ -160,7 +153,6 @@ long long int euclidesExtendido(long long int a, long long int b, long long int 
     *t = s1 - (a / b) * t1;
     return mdc;
 }
-
 long long int chavePrivada(long long int a, long long int m) // Enviar o 'd' da chave privada
 {
     long long int s, t;
@@ -171,7 +163,6 @@ long long int chavePrivada(long long int a, long long int m) // Enviar o 'd' da 
     }
     return (s % m + m) % m;
 }
-
 int descriptografar(int mensagem, int d, int n) // Enviar chave criptografada para adquirir a mensagem pura
 {
     scanf("%d", &mensagem);
@@ -192,7 +183,6 @@ int descriptografar(int mensagem, int d, int n) // Enviar chave criptografada pa
         return 0;
     }
 }
-
 int main() // Escolha de função
 {
     int escolha;
