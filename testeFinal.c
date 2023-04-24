@@ -97,7 +97,7 @@ int exp_mod_rapida(int mensagem, int e, int n)
     }
     return res;
 }
-int ordena(char palavra[], int cont, int i, char alfabeto[], int contAlfabeto, int e, int n, int convertido[])
+int criptografar(char palavra[], int cont, int i, char alfabeto[], int contAlfabeto, int e, int n, int convertido[])
 {
     if (cont == i)
     {
@@ -118,12 +118,12 @@ int ordena(char palavra[], int cont, int i, char alfabeto[], int contAlfabeto, i
         if (contAlfabeto == 26)
         {
             convertido[cont] = 28;
-            return ordena(palavra, cont + 1, i, alfabeto, 0, e, n, convertido);
+            return criptografar(palavra, cont + 1, i, alfabeto, 0, e, n, convertido);
         }
         convertido[cont] = alfabeto[contAlfabeto] - 63;
-        return ordena(palavra, cont + 1, i, alfabeto, 0, e, n, convertido);
+        return criptografar(palavra, cont + 1, i, alfabeto, 0, e, n, convertido);
     }
-    return ordena(palavra, cont, i, alfabeto, contAlfabeto + 1, e, n, convertido);
+    return criptografar(palavra, cont, i, alfabeto, contAlfabeto + 1, e, n, convertido);
 }
 void frase(char palavra[], int i, char alfabeto[])
 {
@@ -134,7 +134,7 @@ void frase(char palavra[], int i, char alfabeto[])
         printf("Digite a chave publica: ");
         scanf("%d %d", &e, &n);
         int convertido[i];
-        ordena(palavra, 0, i, alfabeto, 0, e, n, convertido);
+        criptografar(palavra, 0, i, alfabeto, 0, e, n, convertido);
         return;
     }
     frase(palavra, i + 1, alfabeto);
