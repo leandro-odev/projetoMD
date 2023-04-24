@@ -19,11 +19,11 @@ int primo(long long int x, long long int i, long long int div) // Verificar se o
     {
         if (x % i == 0)
         {
-            return primo(x, i + 2, div + 1);
+            return primo(x, i + 1, div + 1);
         }
         else
         {
-            return primo(x, i + 2, div);
+            return primo(x, i + 1, div);
         }
     }
 }
