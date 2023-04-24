@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include <ctype.h>
 
 int primo(long long int x, long long int i, long long int div) // Verificar se os números p e q são primos
 {
@@ -128,7 +129,7 @@ int ordena(char palavra[], int cont, int i, char alfabeto[], int contAlfabeto, i
         printf("\n");
         return 0;
     }
-    else if (palavra[cont] == alfabeto[contAlfabeto])
+    else if (toupper(palavra[cont]) == alfabeto[contAlfabeto])
     {
         if (contAlfabeto == 26)
         {
