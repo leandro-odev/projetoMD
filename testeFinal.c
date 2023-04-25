@@ -4,7 +4,7 @@
 
 int primo(long long int x, long long int i, int div) // Verificar se os números p e q são primos
 {
-    if (i > sqrt(x))
+    if (i > sqrt(x)+1)
     {
         if (div != 1 || x == 1 || x == 0)
         {
