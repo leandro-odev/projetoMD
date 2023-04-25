@@ -4,7 +4,7 @@
 
 int primo(long long int x, long long int i, int div) // Verificar se os números p e q são primos
 {
-    if (i >= sqrt(x))
+    if (i > sqrt(x))
     {
         if (div != 1 || x == 1 || x == 0)
         {
@@ -163,25 +163,33 @@ long long int chavePrivada(long long int a, long long int m) // Enviar o 'd' da 
     }
     return (s % m + m) % m;
 }
-int descriptografar(int mensagem, int d, int n) // Enviar chave criptografada para adquirir a mensagem pura
+int descriptografar(int d, int n) // Enviar chave criptografada para adquirir a mensagem pura
 {
-    scanf("%d", &mensagem);
-    if (mensagem != 0)
+
+    FILE *file;
+    FILE *arquivo;
+    file = fopen("criptografia.txt", "r");
+    arquivo = fopen("mensagem.txt", "w");
+    int i = 0;
+    fscanf(file, "%d", &i);
+    while (!feof(file))
     {
-        int resultado = mensagem;
-        resultado = exp_mod_rapida(mensagem, d, n);
-        char letra = resultado + 63;
-        if (letra > 90 || letra < 65)
+        char letra;
+        i = exp_mod_rapida(i, d, n);
+        if (i == 28)
         {
             letra = ' ';
         }
-        printf("%c", letra);
-        return descriptografar(mensagem, d, n);
+        else
+        {
+            letra = i + 63;
+        }
+        fprintf(arquivo, "%c", letra);
+        fscanf(file, "%d", &i);
     }
-    else if (mensagem <= 0)
-    {
-        return 0;
-    }
+    printf("A mensagem descriptografada está no diretório do programa.");
+    fclose(file);
+    fclose(arquivo);
 }
 int main() // Escolha de função
 {
@@ -207,10 +215,8 @@ int main() // Escolha de função
         int e, p, q;
         printf("Digite o 'p', 'q' e 'e': ");
         scanf("%d %d %d", &p, &q, &e);
-        int mensagem;
-        printf("Digite a mensagem que você quer descriptografar: ");
         int d = chavePrivada(e, ((p - 1) * (q - 1)));
-        descriptografar(mensagem, d, p * q);
+        descriptografar(d, p * q);
     }
     else
     {
@@ -218,4 +224,3 @@ int main() // Escolha de função
         return main();
     }
 }
-
