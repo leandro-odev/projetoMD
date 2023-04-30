@@ -163,7 +163,7 @@ long long int chavePrivada(long long int a, long long int m) // Enviar o 'd' da 
     }
     return (s % m + m) % m;
 }
-int descriptografar(int d, int n) // Enviar chave criptografada para adquirir a mensagem pura
+int descriptografar(int d, int n) // Descriptografar a mensagem encriptada
 {
 
     FILE *file;
