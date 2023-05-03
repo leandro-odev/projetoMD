@@ -2,22 +2,22 @@
 #include <math.h>
 #include <ctype.h>
 
-int primo(int x) // Verificar se os números p e q são primos
+int primo(long long int x) // Verificar se os números p e q são primos
 {
-    if(x<=1)
+    if (x <= 1)
     {
         return 0;
     }
-    for(int i = 2; i <= sqrt(x); i++)
+    for (int i = 2; i <= sqrt(x); i++)
     {
-        if(x % i == 0)
+        if (x % i == 0)
         {
             return 0;
         }
     }
     return 1;
 }
-int mdc(int n, int i) // Ver o mdc de todos possiveis numeros
+long long int mdc(long long int n, long long int i) // Ver o mdc de todos possiveis numeros
 {
     if (n % i == 0)
     {
@@ -28,11 +28,11 @@ int mdc(int n, int i) // Ver o mdc de todos possiveis numeros
         return mdc(i, n % i);
     }
 }
-int coprimo(int n) // Ver os numeros que são coprimos para a formação da chave 'e'
+long long int coprimo(long long int n) // Ver os numeros que são coprimos para a formação da chave 'e'
 {
-    int i;
-    printf("Digite um número relativamente primo a %d:", n);
-    scanf("%d", &i);
+    long long int i;
+    printf("Digite um número relativamente primo a %lld:", n);
+    scanf("%lld", &i);
     if (i > n)
     {
         printf("Número inválido, digite novamente\n");
@@ -53,16 +53,16 @@ int coprimo(int n) // Ver os numeros que são coprimos para a formação da chav
 }
 void gerar() // Função que gera a chave pública
 {
-    int p, q, e, n, totiente;
+    long long int p, q, e, n, totiente;
     printf("Digite dois números:");
-    scanf("%d%d", &p, &q);
+    scanf("%lld%lld", &p, &q);
     if (primo(p) == 1 && primo(q) == 1)
     {
         n = p * q;
         totiente = (p - 1) * (q - 1);
         char *ChavePublica = "ChavePublica.txt";
         FILE *fp = fopen(ChavePublica, "w");
-        fprintf(fp, "A chave pública é %d %d\n", coprimo(totiente), n);
+        fprintf(fp, "A chave pública é %lld %lld\n", coprimo(totiente), n);
         fclose(fp);
         printf("A chave pública foi salva no diretório do programa\n");
         return;
@@ -129,7 +129,7 @@ void frase(char palavra[], int i, char alfabeto[])
     }
     frase(palavra, i + 1, alfabeto);
 }
-int euclidesExtendido(int a, int b, int *s, int *t) // Achar o 'd'
+long long int euclidesExtendido(long long int a, long long int b, long long int *s, long long int *t) // Achar o 'd'
 {
     if (b == 0)
     {
@@ -137,15 +137,15 @@ int euclidesExtendido(int a, int b, int *s, int *t) // Achar o 'd'
         *t = 0;
         return a;
     }
-    int s1, t1;
+    long long int s1, t1;
     int mdc = euclidesExtendido(b, a % b, &s1, &t1);
     *s = t1;
     *t = s1 - (a / b) * t1;
     return mdc;
 }
-int chavePrivada(int a, int m) // Enviar o 'd' da chave privada
+long long int chavePrivada(long long int a, long long int m) // Enviar o 'd' da chave privada
 {
-    int s, t;
+    long long int s, t;
     int mdc = euclidesExtendido(a, m, &s, &t);
     if (mdc != 1)
     {
@@ -153,7 +153,7 @@ int chavePrivada(int a, int m) // Enviar o 'd' da chave privada
     }
     return (s % m + m) % m;
 }
-int descriptografar(int d, int n) // Descriptografar a mensagem encriptada
+int descriptografar(int d, int n) // Enviar chave criptografada para adquirir a mensagem pura
 {
 
     FILE *file;
@@ -177,7 +177,7 @@ int descriptografar(int d, int n) // Descriptografar a mensagem encriptada
         fprintf(arquivo, "%c", letra);
         fscanf(file, "%d", &i);
     }
-    printf("A mensagem descriptografada está no diretório do programa.");
+    printf("A mensagem descriptografada está no diretório do programa.\n");
     fclose(file);
     fclose(arquivo);
 }
