@@ -2,32 +2,22 @@
 #include <math.h>
 #include <ctype.h>
 
-int primo(long long int x, long long int i, int div) // Verificar se os números p e q são primos
+int primo(int x) // Verificar se os números p e q são primos
 {
-    if (i > sqrt(x))
+    if(x<=1)
     {
-        if (div != 1 || x == 1 || x == 0)
+        return 0;
+    }
+    for(int i = 2; i <= sqrt(x); i++)
+    {
+        if(x % i == 0)
         {
             return 0;
         }
-        else
-        {
-            return 1;
-        }
     }
-    else
-    {
-        if (x % i == 0)
-        {
-            return primo(x, i + 1, div + 1);
-        }
-        else
-        {
-            return primo(x, i + 1, div);
-        }
-    }
+    return 1;
 }
-long long int mdc(long long int n, long long int i) // Ver o mdc de todos possiveis numeros
+int mdc(int n, int i) // Ver o mdc de todos possiveis numeros
 {
     if (n % i == 0)
     {
@@ -38,11 +28,11 @@ long long int mdc(long long int n, long long int i) // Ver o mdc de todos possiv
         return mdc(i, n % i);
     }
 }
-long long int coprimo(long long int n) // Ver os numeros que são coprimos para a formação da chave 'e'
+int coprimo(int n) // Ver os numeros que são coprimos para a formação da chave 'e'
 {
-    long long int i;
-    printf("Digite um número relativamente primo a %lld:", n);
-    scanf("%lld", &i);
+    int i;
+    printf("Digite um número relativamente primo a %d:", n);
+    scanf("%d", &i);
     if (i > n)
     {
         printf("Número inválido, digite novamente\n");
@@ -63,16 +53,16 @@ long long int coprimo(long long int n) // Ver os numeros que são coprimos para 
 }
 void gerar() // Função que gera a chave pública
 {
-    long long int p, q, e, n, totiente;
+    int p, q, e, n, totiente;
     printf("Digite dois números:");
-    scanf("%lld%lld", &p, &q);
-    if (primo(p, 1, 0) == 1 && primo(q, 1, 0) == 1)
+    scanf("%d%d", &p, &q);
+    if (primo(p) == 1 && primo(q) == 1)
     {
         n = p * q;
         totiente = (p - 1) * (q - 1);
         char *ChavePublica = "ChavePublica.txt";
         FILE *fp = fopen(ChavePublica, "w");
-        fprintf(fp, "A chave pública é %lld %lld\n", coprimo(totiente), n);
+        fprintf(fp, "A chave pública é %d %d\n", coprimo(totiente), n);
         fclose(fp);
         printf("A chave pública foi salva no diretório do programa\n");
         return;
@@ -139,7 +129,7 @@ void frase(char palavra[], int i, char alfabeto[])
     }
     frase(palavra, i + 1, alfabeto);
 }
-long long int euclidesExtendido(long long int a, long long int b, long long int *s, long long int *t) // Achar o 'd'
+int euclidesExtendido(int a, int b, int *s, int *t) // Achar o 'd'
 {
     if (b == 0)
     {
@@ -147,15 +137,15 @@ long long int euclidesExtendido(long long int a, long long int b, long long int 
         *t = 0;
         return a;
     }
-    long long int s1, t1;
+    int s1, t1;
     int mdc = euclidesExtendido(b, a % b, &s1, &t1);
     *s = t1;
     *t = s1 - (a / b) * t1;
     return mdc;
 }
-long long int chavePrivada(long long int a, long long int m) // Enviar o 'd' da chave privada
+int chavePrivada(int a, int m) // Enviar o 'd' da chave privada
 {
-    long long int s, t;
+    int s, t;
     int mdc = euclidesExtendido(a, m, &s, &t);
     if (mdc != 1)
     {
