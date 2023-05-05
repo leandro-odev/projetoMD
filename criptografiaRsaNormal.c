@@ -17,7 +17,7 @@ int primo(long long int x) // Verifica se os números p e q são primos
     }
     return 1;
 }
-long long int mdc(long long int n, long long int i) // Ve se o mdc do possivel 'e' e totiente
+long long int mdc(long long int n, long long int i) // Ve o mdc do possivel 'e' e totiente
 {
     if (n % i == 0)
     {
