@@ -31,11 +31,11 @@ long long int mdc(long long int n, long long int i) // Ver o mdc de todos possiv
 long long int coprimo(long long int n) // Ver os numeros que são coprimos para a formação da chave 'e'
 {
     long long int i;
-    printf("Digite um número relativamente primo a %lld:", n);
+    printf("Digite um numero relativamente primo a %lld:", n);
     scanf("%lld", &i);
     if (i > n)
     {
-        printf("Número inválido, digite novamente\n");
+        printf("Numero invalido, digite novamente\n");
         return coprimo(n);
     }
     else
@@ -46,7 +46,7 @@ long long int coprimo(long long int n) // Ver os numeros que são coprimos para 
         }
         else
         {
-            printf("Número inválido, digite novamente\n");
+            printf("Numero invalido, digite novamente\n");
             return coprimo(n);
         }
     }
@@ -62,14 +62,14 @@ void gerar() // Função que gera a chave pública
         totiente = (p - 1) * (q - 1);
         char *ChavePublica = "ChavePublica.txt";
         FILE *fp = fopen(ChavePublica, "w");
-        fprintf(fp, "A chave pública é %lld %lld\n", coprimo(totiente), n);
+        fprintf(fp, "A chave publica é %lld %lld\n", coprimo(totiente), n);
         fclose(fp);
-        printf("A chave pública foi salva no diretório do programa\n");
+        printf("A chave publica foi salva no diretorio do programa\n");
         return;
     }
     else
     {
-        printf("Número inválido, digite novamente\n");
+        printf("Numero invalido, digite novamente\n");
         gerar();
     }
 }
@@ -100,7 +100,7 @@ int criptografar(char palavra[], int cont, int i, char alfabeto[], int contAlfab
             fprintf(fp, "%d ", list);
         }
         fclose(fp);
-        printf("A mensagem criptografada foi salva no diretório do programa\n");
+        printf("A mensagem criptografada foi salva no diretorio do programa\n");
         return 0;
     }
     else if (toupper(palavra[cont]) == alfabeto[contAlfabeto])
@@ -153,7 +153,7 @@ long long int chavePrivada(long long int a, long long int m) // Enviar o 'd' da 
     }
     return (s % m + m) % m;
 }
-int descriptografar(int d, int n) // Enviar chave criptografada para adquirir a mensagem pura
+void descriptografar(int d, int n) // Descriptografar a mensagem encriptada
 {
 
     FILE *file;
@@ -177,40 +177,60 @@ int descriptografar(int d, int n) // Enviar chave criptografada para adquirir a 
         fprintf(arquivo, "%c", letra);
         fscanf(file, "%d", &i);
     }
-    printf("A mensagem descriptografada está no diretório do programa.\n");
+    printf("A mensagem descriptografada está no diretorio do programa.\n");
     fclose(file);
     fclose(arquivo);
 }
-int main() // Escolha de função
+void selecao() // Escolha de função
 {
     int escolha;
     char palavra[255];
     char alfabeto[27] = "abcdefghijklmnopqrstuvwxyz ";
-    printf("Digite 1 para gerar a chave pública, 2 para Encriptar ou 3 para Desencriptar.\n");
+    printf("1 - Gerar chave publica\n");
+    printf("2 - Encriptar\n");
+    printf("3 - Desencriptar\n");
+    printf("4 - Sair\n");
     scanf("%d", &escolha);
+    if (escolha == 4)
+    {
+        printf("Obrigado por usar nosso programa!\n");
+        return;
+    }
     if (escolha == 1)
     {
         gerar();
-        return 0;
+        selecao();
     }
-    if (escolha == 2)
+    else if (escolha == 2)
     {
-        printf("Digite a frase que você quer criptografar: ");
+        printf("Digite a frase que voce quer criptografar: ");
         scanf("%c", &palavra[0]);
         frase(palavra, 0, alfabeto);
-        return 0;
+        selecao();
     }
-    if (escolha == 3)
+    else if (escolha == 3)
     {
         int e, p, q;
         printf("Digite o 'p', 'q' e 'e': ");
         scanf("%d %d %d", &p, &q, &e);
         int d = chavePrivada(e, ((p - 1) * (q - 1)));
         descriptografar(d, p * q);
+        selecao();
     }
     else
     {
-        printf("Opção invalida, por favor, digite novamente");
-        return main();
+        printf("Opcao invalida, por favor, digite novamente\n");
+        selecao();
     }
+}
+int main()
+{
+    printf("-----------------------------------\n");
+    printf("|      Bem vindo ao projeto de    |\n");
+    printf("|         Cripografia RSA         |\n");
+    printf("-----------------------------------\n");
+    printf("\n");
+    printf("Para comecar, escolha a opcao desejada:\n");
+    selecao();
+    return 0;
 }
