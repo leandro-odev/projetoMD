@@ -227,7 +227,7 @@ int main()
 {
     printf("-----------------------------------\n");
     printf("|      Bem vindo ao projeto de    |\n");
-    printf("|         Cripografia RSA         |\n");
+    printf("|         Criptografia RSA         |\n");
     printf("-----------------------------------\n");
     printf("\n");
     printf("Para comecar, escolha a opcao desejada:\n");
